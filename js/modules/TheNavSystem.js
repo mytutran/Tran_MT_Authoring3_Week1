@@ -1,5 +1,4 @@
-const DataModule = require("./DataModule");
 
-DataModule.exports = {
+export default {
     message: "I am the nav module"
 }
