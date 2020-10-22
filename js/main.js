@@ -1,70 +1,38 @@
-// import your packages here
-import Team from "./modules/DataModule.js";
-import NavSystem from "./modules/TheNavSystem.js";
 (() => {
-    // stub* just a place for non-component specific stuff
 
-    // set up the XMLHttp object
-    let myReq = new XMLHttpRequest;
-
-    // make sure we can handle whatever data comes back, or any errors
-    myReq.addEventListener("readystatechange", handleRequest);
-
-    // open a request and pass thru the URL of the data that we want
-    myReq.open('GET', '../DataSet.json')
-
-    // actually make the request
-    myReq.send();
-
-    // handleRequest function goes here 
-    function handleRequest() {
-        if (myReq.readyState === XMLHttpRequest.DONE) {
-            // check status here and proceed
-            if (myReq.status === 200) {
-                // 200 means done and dusted, ready to go with the dataset!
-                debugger;
-                handleDataSet(myReq.responseText);
-
-            } else {
-                // probably got some kind of error code, so handle that 
-                // a 404, 500 etc... can render appropriate error messages here
-                console.error(`${myReq.status} : something done broke, son`);
-            }
-        } else {
-            // request isn't ready yet, keep waiting...
-            console.log(`Request state: ${myReq.readyState}. Still processing...`);
-        }
-
-    }
+    // start with a Fetch all
+    fetch('./DataSet.json')
+        .then(res => res.json()) // parse the JSON (translate) back to plain JS
+        .then(data => {
+            // this is our data (DataSet.json)
+            // converted to a plain Javascript object
+            handleDataSet(data);
+        })
+    .catch((error) => console.log(error));
 
 
-    let userSection = document.querySelector(".user-section"),
-        userTemplate = document.querySelector("#profs-template").content;
-
-    debugger;
-
-    //select our user elements and load the content
-   
+    // this receives the data payload from our AJAX request, parses it (turns the returned JSON object back into a plain JavaScript object) and renders the data to our view (the markup in index.html)
     function handleDataSet(data) {
+        let userSection = document.querySelector('.user-section'),
+            userTemplate = document.querySelector('#user-template').content;
+
         debugger;
+
+        // loop through the JavaScript object and for each user, make a copy of the user template we find at the bottom of index.html, populate it with the user's data, and put that fresh copy in the users section in index.html
+
         for (let user in data) {
-
- 
-
-            // make a copy of our template here and then
-            // populate the children (text elements) with
-            // the static data from the Team object
             let currentUser = userTemplate.cloneNode(true),
-                currentUserText = currentUser.querySelector(".user").children;
+                currentUserText = currentUser.querySelector('.user').children;
 
             currentUserText[1].textContent = data[user].name;
             currentUserText[2].textContent = data[user].role;
             currentUserText[3].textContent = data[user].nickname;
 
+            // add this new user to the view
             userSection.appendChild(currentUser);
         }
+
+        console.log(data);
+ 
     }
-
-    handleDataSet(Team);
-
 })();
