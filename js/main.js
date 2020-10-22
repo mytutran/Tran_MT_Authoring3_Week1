@@ -24,9 +24,10 @@
             let currentUser = userTemplate.cloneNode(true),
                 currentUserText = currentUser.querySelector('.user').children;
 
-            currentUserText[1].textContent = data[user].name;
-            currentUserText[2].textContent = data[user].role;
-            currentUserText[3].textContent = data[user].nickname;
+            currentUserText[1].textContent = `images/${data[user].avatar}.jpg`;
+            currentUserText[2].textContent = data[user].name;
+            currentUserText[3].textContent = data[user].role;
+            currentUserText[4].textContent = data[user].nickname;
 
             // add this new user to the view
             userSection.appendChild(currentUser);
