@@ -1,16 +1,7 @@
+import {fetchData} from "./modules/DataMiner.js";
+
 (() => {
-
-    // start with a Fetch all
-    fetch('./DataSet.json')
-        .then(res => res.json()) // parse the JSON (translate) back to plain JS
-        .then(data => {
-            // this is our data (DataSet.json)
-            // converted to a plain Javascript object
-            handleDataSet(data);
-        })
-    .catch((error) => console.log(error));
-
-
+  
     // this receives the data payload from our AJAX request, parses it (turns the returned JSON object back into a plain JavaScript object) and renders the data to our view (the markup in index.html)
     function handleDataSet(data) {
         let userSection = document.querySelector('.user-section'),
@@ -36,4 +27,8 @@
         console.log(data);
  
     }
+
+    fetchData('./DataSet.json').then(data => handleDataSet(data)).catch(err => console.log(err));
+    //fetchData('./AnotherDataSet.json').then(data => handleMoreDataSet(data)).catch(err => console.log(err));
+
 })();
